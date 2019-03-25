@@ -1,0 +1,30 @@
+{
+  "name": "uuid58",
+  "version": "1.0.0",
+  "description": "Convert UUID -> base58 and base58 -> UUID",
+  "main": "index.js",
+  "dependencies": {
+    "bs58": "^4.0.1"
+  },
+  "devDependencies": {
+    "jest": "^24.5.0"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heiskr/uuid58.git"
+  },
+  "keywords": [
+    "uuid",
+    "base58",
+    "bs58"
+  ],
+  "author": "Kevin Heis",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/heiskr/uuid58/issues"
+  },
+  "homepage": "https://github.com/heiskr/uuid58#readme"
+}
