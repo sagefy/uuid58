@@ -1,12 +1,12 @@
 var bs58 = require('bs58')
 
-var REMOVE_DASH_REGEXP = /-/g
+var DASH_REGEXP = /-/g
 
 function convertUuidToUuid58(uuid) {
   try {
     return bs58.encode(
       Buffer.from(
-        uuid.replace(REMOVE_DASH_REGEXP, ''),
+        uuid.replace(DASH_REGEXP, ''),
         'hex'
       )
     ) 
