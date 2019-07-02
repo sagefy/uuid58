@@ -9,9 +9,9 @@ function convertUuidToUuid58(uuid) {
         uuid.replace(DASH_REGEXP, ''),
         'hex'
       )
-    ) 
+    )
   } catch (e) {
-    return uuid 
+    return uuid
   }
 }
 
@@ -26,7 +26,7 @@ function convertUuid58ToUuid(uuid58) {
       hex.substr(20)
     ].join('-')
   } catch (e) {
-    return uuid58 
+    return uuid58
   }
 }
 
