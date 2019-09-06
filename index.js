@@ -8,12 +8,12 @@ const UUID_INDEXES = [0, 8, 12, 16, 20]
 function encode(uuid) {
   try {
     let b = BigInt('0x' + uuid.replace(DASH_REGEXP, ''))
-    let output = ''
+    let u58 = ''
     do {
-      output = BASE58[b % BASE] + output
+      u58 = BASE58[b % BASE] + u58
       b = b / BASE
     } while (b > 0)
-    return output
+    return u58
   } catch (e) {
     return uuid
   }
@@ -22,13 +22,16 @@ function encode(uuid) {
 function decode(uuid58) {
   try {
     const max = uuid58.length - 1
-    const output = Array.from(uuid58).reduce((acc, chr, pos) => {
-      const inc = BASE58.indexOf(chr)
-      if (inc < 0) throw new Error()
-      return (acc + BigInt(inc)) * (pos < max ? BASE : ONE)
-    }, ZERO).toString(16).padStart(32, '0')
+    const hex = Array.from(uuid58)
+      .reduce((acc, chr, pos) => {
+        const inc = BASE58.indexOf(chr)
+        if (inc < 0) throw new Error()
+        return (acc + BigInt(inc)) * (pos < max ? BASE : ONE)
+      }, ZERO)
+      .toString(16)
+      .padStart(32, '0')
     return UUID_INDEXES
-      .map((p, i, a) => output.substring(p, a[i + 1]))
+      .map((p, i, a) => hex.substring(p, a[i + 1]))
       .join('-')
   } catch (e) {
     return uuid58
