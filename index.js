@@ -21,18 +21,15 @@ function encode(uuid) {
 
 function decode(uuid58) {
   try {
+    const parts = Array.from(uuid58).map(x => BASE58.indexOf(x))
+    if (parts.some(inc => inc < 0)) throw new Error()
     const max = uuid58.length - 1
-    const hex = Array.from(uuid58)
-      .reduce((acc, chr, pos) => {
-        const inc = BASE58.indexOf(chr)
-        if (inc < 0) throw new Error()
-        return (acc + BigInt(inc)) * (pos < max ? BASE : ONE)
-      }, ZERO)
-      .toString(16)
-      .padStart(32, '0')
-    return UUID_INDEXES
-      .map((p, i, a) => hex.substring(p, a[i + 1]))
-      .join('-')
+    const b = parts.reduce(
+      (acc, inc, pos) => (acc + BigInt(inc)) * (pos < max ? BASE : ONE),
+      ZERO
+    )
+    const hex = b.toString(16).padStart(32, '0')
+    return UUID_INDEXES.map((p, i, a) => hex.substring(p, a[i + 1])).join('-')
   } catch (e) {
     return uuid58
   }
