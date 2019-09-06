@@ -1,38 +1,46 @@
-var bs58 = require('bs58')
+const DASH_REGEXP = /-/g
+const BASE58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+const BASE = BigInt(BASE58.length)
+const UUID_INDEXES = [0, 8, 12, 16, 20]
 
-var DASH_REGEXP = /-/g
-
-function convertUuidToUuid58(uuid) {
+function encode(uuid) {
   try {
-    return bs58.encode(
-      Buffer.from(
-        uuid.replace(DASH_REGEXP, ''),
-        'hex'
-      )
-    )
+    let bint = BigInt('0x' + uuid.replace(DASH_REGEXP, ''))
+    let output = ''
+    do {
+      output = BASE58.substr(Number(bint % BASE), 1) + output
+      bint = bint / BASE
+    } while (bint > 0)
+    return output
   } catch (e) {
     return uuid
   }
 }
 
-function convertUuid58ToUuid(uuid58) {
+function decode(uuid58) {
   try {
-    var hex = bs58.decode(uuid58).toString('hex')
-    return [
-      hex.substr(0, 8),
-      hex.substr(8, 4),
-      hex.substr(12, 4),
-      hex.substr(16, 4),
-      hex.substr(20)
-    ].join('-')
+    const len = uuid58.length
+    let output = BigInt(0)
+    for (let [pos, chr] of uuid58.split('').entries()) {
+      const index = BASE58.indexOf(chr)
+      if (index < 0) throw new Error()
+      output += BigInt(index)
+      if (pos < len - 1) output *= BASE
+    }
+    output = output.toString(16).padStart(32, '0')
+    return UUID_INDEXES
+      .map((p, i, a) => output.substring(p, a[i + 1]))
+      .join('-')
   } catch (e) {
     return uuid58
   }
 }
 
 module.exports = {
-  convertUuidToUuid58: convertUuidToUuid58,
-  convertUuid58ToUuid: convertUuid58ToUuid,
-  to58: convertUuidToUuid58,
-  toU: convertUuid58ToUuid,
+  encode,
+  decode,
+  convertUuidToUuid58: encode,
+  convertUuid58ToUuid: decode,
+  to58: encode,
+  toU: decode,
 }

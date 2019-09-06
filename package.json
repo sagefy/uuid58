@@ -3,9 +3,7 @@
   "version": "1.0.3",
   "description": "Convert UUID -> base58 and base58 -> UUID",
   "main": "index.js",
-  "dependencies": {
-    "bs58": "^4.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "jest": "^24.9.0"
   },

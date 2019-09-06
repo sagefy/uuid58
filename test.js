@@ -1,22 +1,49 @@
-var uuid58 = require('./index')
+const {
+  encode,
+  decode,
+  convertUuidToUuid58,
+  convertUuid58ToUuid,
+  to58,
+  toU,
+} = require('./index')
 
-describe('uuid58', function() {
-  var xuuid = '7a2957d2-b79c-48c6-9771-270aed712fd8'
-  var xuuid58 = 'G5w1tJ2db6LJg8PxiEvkdm'
+const xuuid = '7a2957d2-b79c-48c6-9771-270aed712fd8'
+const xuuid58 = 'G5w1tJ2db6LJg8PxiEvkdm'
 
-  it('should convert a uuid to uuid58', function() {
-    expect(uuid58.convertUuidToUuid58(xuuid)).toBe(xuuid58)
+describe('uuid58', () => {
+  it('should convert a uuid to uuid58', () => {
+    expect(encode(xuuid)).toBe(xuuid58)
   })
 
-  it('should convert a uuid58 to uuid', function() {
-    expect(uuid58.convertUuid58ToUuid(xuuid58)).toBe(xuuid)
+  it('should convert an uppercase uuid to uuid58', () => {
+    expect(encode(xuuid.toUpperCase())).toBe(xuuid58)
   })
 
-  it('should convert a uuid to uuid58 alias', function() {
-    expect(uuid58.to58(xuuid)).toBe(xuuid58)
+  it('should ignore already encoded', () => {
+    expect(encode(xuuid58)).toBe(xuuid58)
   })
 
-  it('should convert a uuid58 to uuid alias', function() {
-    expect(uuid58.toU(xuuid58)).toBe(xuuid)
+  it('should convert a uuid58 to uuid', () => {
+    expect(decode(xuuid58)).toBe(xuuid)
+  })
+
+  it('should ignore already decoded', () => {
+    expect(decode(xuuid)).toBe(xuuid)
+  })
+
+  it('should have alias convertUuidToUuid58', () => {
+    expect(convertUuidToUuid58).toBe(encode)
+  })
+
+  it('should have alias convertUuidToUuid58', () => {
+    expect(convertUuid58ToUuid).toBe(decode)
+  })
+
+  it('should have alias convertUuidToUuid58', () => {
+    expect(to58).toBe(encode)
+  })
+
+  it('should have alias convertUuidToUuid58', () => {
+    expect(toU).toBe(decode)
   })
 })
