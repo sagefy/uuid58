@@ -5,12 +5,12 @@ const UUID_INDEXES = [0, 8, 12, 16, 20]
 
 function encode(uuid) {
   try {
-    let bint = BigInt('0x' + uuid.replace(DASH_REGEXP, ''))
+    let b = BigInt('0x' + uuid.replace(DASH_REGEXP, ''))
     let output = ''
     do {
-      output = BASE58[bint % BASE] + output
-      bint = bint / BASE
-    } while (bint > 0)
+      output = BASE58[b % BASE] + output
+      b = b / BASE
+    } while (b > 0)
     return output
   } catch (e) {
     return uuid
@@ -21,7 +21,7 @@ function decode(uuid58) {
   try {
     const len = uuid58.length
     let output = BigInt(0)
-    for (let [pos, chr] of uuid58.split('').entries()) {
+    for (let [pos, chr] of Array.from(uuid58).entries()) {
       const index = BASE58.indexOf(chr)
       if (index < 0) throw new Error()
       output += BigInt(index)
