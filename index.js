@@ -8,7 +8,7 @@ function encode(uuid) {
     let bint = BigInt('0x' + uuid.replace(DASH_REGEXP, ''))
     let output = ''
     do {
-      output = BASE58.substr(Number(bint % BASE), 1) + output
+      output = BASE58[bint % BASE] + output
       bint = bint / BASE
     } while (bint > 0)
     return output
