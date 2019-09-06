@@ -33,4 +33,6 @@ function convertUuid58ToUuid(uuid58) {
 module.exports = {
   convertUuidToUuid58: convertUuidToUuid58,
   convertUuid58ToUuid: convertUuid58ToUuid,
+  to58: convertUuidToUuid58,
+  toU: convertUuid58ToUuid,
 }

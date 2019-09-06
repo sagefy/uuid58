@@ -11,4 +11,12 @@ describe('uuid58', function() {
   it('should convert a uuid58 to uuid', function() {
     expect(uuid58.convertUuid58ToUuid(xuuid58)).toBe(xuuid)
   })
+
+  it('should convert a uuid to uuid58 alias', function() {
+    expect(uuid58.to58(xuuid)).toBe(xuuid58)
+  })
+
+  it('should convert a uuid58 to uuid alias', function() {
+    expect(uuid58.toU(xuuid58)).toBe(xuuid)
+  })
 })
