@@ -1,6 +1,8 @@
 const DASH_REGEXP = /-/g
 const BASE58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 const BASE = BigInt(BASE58.length)
+const ONE = BigInt(1)
+const ZERO = BigInt(0)
 const UUID_INDEXES = [0, 8, 12, 16, 20]
 
 function encode(uuid) {
@@ -19,15 +21,12 @@ function encode(uuid) {
 
 function decode(uuid58) {
   try {
-    const len = uuid58.length
-    let output = BigInt(0)
-    for (let [pos, chr] of Array.from(uuid58).entries()) {
-      const index = BASE58.indexOf(chr)
-      if (index < 0) throw new Error()
-      output += BigInt(index)
-      if (pos < len - 1) output *= BASE
-    }
-    output = output.toString(16).padStart(32, '0')
+    const max = uuid58.length - 1
+    const output = Array.from(uuid58).reduce((acc, chr, pos) => {
+      const inc = BASE58.indexOf(chr)
+      if (inc < 0) throw new Error()
+      return (acc + BigInt(inc)) * (pos < max ? BASE : ONE)
+    }, ZERO).toString(16).padStart(32, '0')
     return UUID_INDEXES
       .map((p, i, a) => output.substring(p, a[i + 1]))
       .join('-')
