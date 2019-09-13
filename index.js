@@ -22,7 +22,7 @@ function encode(uuid) {
 function decode(uuid58) {
   try {
     const parts = Array.from(uuid58).map(x => BASE58.indexOf(x))
-    if (parts.some(inc => inc < 0)) throw new Error()
+    if (parts.some(inc => inc < 0)) return uuid58
     const max = uuid58.length - 1
     const b = parts.reduce(
       (acc, inc, pos) => (acc + BigInt(inc)) * (pos < max ? BASE : ONE),
